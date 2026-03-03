@@ -6,7 +6,7 @@ import CommonLogo from '@/components/CommonLogo'
 import { TEMPLATES } from '@/lib/templates'
 
 export default function Home() {
-  const [selectedTemplate, setSelectedTemplate] = useState('')
+  const [task, setTask] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [declaration, setDeclaration] = useState('')
   const router = useRouter()
@@ -20,18 +20,12 @@ export default function Home() {
     // Restore next step from previous session
     const nextStep = localStorage.getItem('minihack.nextStep')
     if (nextStep) {
-      setSelectedTemplate(nextStep)
+      setTask(nextStep)
     }
   }, [])
 
-  const handleRandomTemplate = () => {
-    const randomIndex = Math.floor(Math.random() * TEMPLATES.length)
-    const randomTemplate = TEMPLATES[randomIndex]
-    setSelectedTemplate(randomTemplate)
-  }
-
   const handleStart = () => {
-    if (!selectedTemplate.trim()) return
+    if (!task.trim()) return
     setShowModal(true)
   }
 
@@ -42,9 +36,9 @@ export default function Home() {
     const sessionId = `session_${Date.now()}`
     const sessionData = {
       sessionId,
-      theme: selectedTemplate,
+      theme: task,
       declaredStep: declaration,
-      declaredFromTemplate: selectedTemplate || null,
+      declaredFromTemplate: null,
       startAt: new Date().toISOString(),
       keystrokes: 0
     }
@@ -64,32 +58,20 @@ export default function Home() {
       <CommonLogo variant="home" />
 
       <div className="flex flex-col items-center space-y-6 md:space-y-8 w-full max-w-sm md:max-w-md px-4">
-        {/* Template Selection */}
-        <div className="w-full space-y-3">
-          <select
-            value={selectedTemplate}
-            onChange={(e) => setSelectedTemplate(e.target.value)}
-            className="w-full h-12 md:h-14 px-4 bg-gray-900 border border-gray-800 rounded text-white font-mono text-sm md:text-base lg:text-lg focus:outline-none focus:border-blue-500"
-          >
-            <option value="">選択...</option>
-            {TEMPLATES.map((template, index) => (
-              <option key={index} value={template}>
-                {template.length > 30 ? template.substring(0, 30) + '...' : template}
-              </option>
-            ))}
-          </select>
-
-          <button
-            onClick={handleRandomTemplate}
-            className="w-full h-10 md:h-12 bg-gray-800 text-white font-mono text-sm md:text-base rounded hover:bg-gray-700 transition-colors"
-          >
-            ランダムで選ぶ
-          </button>
+        {/* Task Input */}
+        <div className="w-full">
+          <input
+            type="text"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+            placeholder="やることを入力..."
+            className="w-full h-12 md:h-14 px-4 bg-gray-900 border border-gray-800 rounded text-white font-mono text-sm md:text-base lg:text-lg focus:outline-none focus:border-blue-500 placeholder-gray-600"
+          />
         </div>
 
         <button
           onClick={handleStart}
-          disabled={!selectedTemplate.trim()}
+          disabled={!task.trim()}
           className="w-full h-12 md:h-14 px-6 bg-blue-600 text-white font-mono text-sm md:text-base lg:text-lg rounded disabled:bg-gray-800 disabled:text-gray-600 disabled:cursor-not-allowed"
         >
           Start MiniHack
