@@ -71,7 +71,7 @@ export default function Home() {
             onChange={(e) => setSelectedTemplate(e.target.value)}
             className="w-full h-12 md:h-14 px-4 bg-gray-900 border border-gray-800 rounded text-white font-mono text-sm md:text-base lg:text-lg focus:outline-none focus:border-blue-500"
           >
-            <option value="">テンプレートを選択...</option>
+            <option value="">選択...</option>
             {TEMPLATES.map((template, index) => (
               <option key={index} value={template}>
                 {template.length > 30 ? template.substring(0, 30) + '...' : template}
