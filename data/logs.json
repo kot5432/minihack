@@ -1,0 +1,42 @@
+[
+  {
+    "sessionId": "2026-03-03T20:00:00.000Z",
+    "templateId": "A",
+    "generatedText": "AI generated summary A",
+    "editedText": "AI generated summary A (User edited)",
+    "isEdited": true,
+    "timestamp": "2026-03-03T20:25:00.000Z"
+  },
+  {
+    "sessionId": "2026-03-03T20:30:00.000Z",
+    "templateId": "B",
+    "generatedText": "AI generated summary B",
+    "editedText": "AI generated summary B",
+    "isEdited": false,
+    "timestamp": "2026-03-03T20:55:00.000Z"
+  },
+  {
+    "sessionId": "2026-03-03T21:00:00.000Z",
+    "templateId": "A",
+    "generatedText": "AI generated summary A",
+    "editedText": "AI generated summary A (Polished)",
+    "isEdited": true,
+    "timestamp": "2026-03-03T21:25:00.000Z"
+  },
+  {
+    "sessionId": "2026-03-03T12:00:21.394Z",
+    "templateId": "A",
+    "generatedText": "[Mock Concise] 今日のMiniHackでは、「;lkj」をテーマに「ljk」に取り組み、「n.」という気づきを得ました。着実に前進しています。",
+    "editedText": "[Mock Concise] 今日のMiniHackでは、「;lkj」をテーマに「ljk」に取り組み、「n.」という気づきを得ました。着実に前進しています。",
+    "isEdited": false,
+    "timestamp": "2026-03-03T12:00:36.165Z"
+  },
+  {
+    "sessionId": "2026-03-03T12:44:33.928Z",
+    "templateId": "A",
+    "generatedText": "[Mock Concise] 今日のMiniHackでは、「かきくけこ」をテーマに「これ\n」に取り組み、「あれ」という気づきを得ました。着実に前進しています。",
+    "editedText": "[Mock Concise] 今日のMiniHackでは、「かきくけこ」をテーマに「これ\n」に取り組み、「あれ」という気づきを得ました。着実に前進しています。",
+    "isEdited": false,
+    "timestamp": "2026-03-03T12:44:52.749Z"
+  }
+]
