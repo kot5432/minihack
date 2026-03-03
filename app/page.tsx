@@ -7,8 +7,6 @@ import { TEMPLATES } from '@/lib/templates'
 
 export default function Home() {
   const [task, setTask] = useState('')
-  const [showModal, setShowModal] = useState(false)
-  const [declaration, setDeclaration] = useState('')
   const router = useRouter()
 
   useEffect(() => {
@@ -26,18 +24,13 @@ export default function Home() {
 
   const handleStart = () => {
     if (!task.trim()) return
-    setShowModal(true)
-  }
-
-  const handleConfirmDeclaration = () => {
-    if (!declaration.trim()) return
 
     // Save session data
     const sessionId = `session_${Date.now()}`
     const sessionData = {
       sessionId,
       theme: task,
-      declaredStep: declaration,
+      declaredStep: task,
       declaredFromTemplate: null,
       startAt: new Date().toISOString(),
       keystrokes: 0
@@ -45,12 +38,7 @@ export default function Home() {
     
     localStorage.setItem('minihack.currentSession', JSON.stringify(sessionData))
     
-    setShowModal(false)
     router.push('/focus')
-  }
-
-  const handleCancel = () => {
-    setShowModal(false)
   }
 
   return (
@@ -76,50 +64,6 @@ export default function Home() {
           Start MiniHack
         </button>
       </div>
-
-      {/* Declaration Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 px-4">
-          <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 md:p-8 w-full max-w-md">
-            <h2 className="text-white text-lg md:text-xl font-mono mb-4 text-center">
-              今日の一歩を宣言してください
-            </h2>
-            
-            <p className="text-gray-400 text-sm md:text-base font-mono mb-6 text-center leading-relaxed">
-              大きな目標ではなく、25分で確実に終えられる「最初の一歩」を1行で宣言してください。
-            </p>
-
-            <textarea
-              value={declaration}
-              onChange={(e) => setDeclaration(e.target.value)}
-              placeholder="例：トップページのCTA文を3案書く"
-              maxLength={100}
-              className="w-full h-24 px-4 py-3 bg-gray-800 border border-gray-700 rounded text-white font-mono text-sm md:text-base focus:outline-none focus:border-blue-500 placeholder-gray-600 resize-none"
-            />
-
-            <div className="text-gray-500 text-xs font-mono text-right mb-6">
-              {declaration.length}/100
-            </div>
-
-            <div className="flex space-x-3">
-              <button
-                onClick={handleCancel}
-                className="flex-1 h-12 bg-gray-800 text-white font-mono text-sm md:text-base rounded hover:bg-gray-700 transition-colors"
-              >
-                キャンセル
-              </button>
-              
-              <button
-                onClick={handleConfirmDeclaration}
-                disabled={!declaration.trim()}
-                className="flex-1 h-12 bg-blue-600 text-white font-mono text-sm md:text-base rounded disabled:bg-gray-800 disabled:text-gray-600 disabled:cursor-not-allowed"
-              >
-                宣言して開始
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

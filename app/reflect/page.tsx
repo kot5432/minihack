@@ -37,7 +37,7 @@ export default function Reflect() {
     let declaredStepText = ''
     if (currentSession) {
       const sessionData = JSON.parse(currentSession)
-      declaredStepText = sessionData.declaredStep || ''
+      declaredStepText = sessionData.declaredStep || sessionData.theme || ''
     }
 
     setSessionData({ theme, keystrokes, start, end })
@@ -220,7 +220,7 @@ export default function Reflect() {
           {declaredStep && (
             <div className="space-y-4">
               <label className="block text-center text-white text-xs md:text-sm font-bold opacity-90">
-                開始時に宣言した一歩
+                やったこと
               </label>
               <div className="w-full px-4 py-3 bg-blue-900/20 border border-blue-500/30 rounded text-blue-300 text-xs md:text-sm text-center">
                 {declaredStep}
