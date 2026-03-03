@@ -6,7 +6,6 @@ import CommonLogo from '@/components/CommonLogo'
 import { TEMPLATES } from '@/lib/templates'
 
 export default function Home() {
-  const [theme, setTheme] = useState('')
   const [selectedTemplate, setSelectedTemplate] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [declaration, setDeclaration] = useState('')
@@ -21,7 +20,6 @@ export default function Home() {
     // Restore next step from previous session
     const nextStep = localStorage.getItem('minihack.nextStep')
     if (nextStep) {
-      setTheme(nextStep)
       setSelectedTemplate(nextStep)
     }
   }, [])
@@ -30,11 +28,10 @@ export default function Home() {
     const randomIndex = Math.floor(Math.random() * TEMPLATES.length)
     const randomTemplate = TEMPLATES[randomIndex]
     setSelectedTemplate(randomTemplate)
-    setTheme(randomTemplate)
   }
 
   const handleStart = () => {
-    if (!theme.trim()) return
+    if (!selectedTemplate.trim()) return
     setShowModal(true)
   }
 
@@ -45,7 +42,7 @@ export default function Home() {
     const sessionId = `session_${Date.now()}`
     const sessionData = {
       sessionId,
-      theme,
+      theme: selectedTemplate,
       declaredStep: declaration,
       declaredFromTemplate: selectedTemplate || null,
       startAt: new Date().toISOString(),
@@ -53,7 +50,6 @@ export default function Home() {
     }
     
     localStorage.setItem('minihack.currentSession', JSON.stringify(sessionData))
-    localStorage.setItem('minihack_theme', theme)
     
     setShowModal(false)
     router.push('/focus')
@@ -76,10 +72,7 @@ export default function Home() {
         <div className="w-full space-y-3">
           <select
             value={selectedTemplate}
-            onChange={(e) => {
-              setSelectedTemplate(e.target.value)
-              setTheme(e.target.value)
-            }}
+            onChange={(e) => setSelectedTemplate(e.target.value)}
             className="w-full h-12 md:h-14 px-4 bg-gray-900 border border-gray-800 rounded text-white font-mono text-sm md:text-base lg:text-lg focus:outline-none focus:border-blue-500"
           >
             <option value="">テンプレートを選択...</option>
@@ -98,18 +91,9 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Theme Input */}
-        <input
-          type="text"
-          value={theme}
-          onChange={(e) => setTheme(e.target.value)}
-          placeholder="テーマを入力..."
-          className="w-full h-12 md:h-14 px-4 bg-gray-900 border border-gray-800 rounded text-white font-mono text-sm md:text-base lg:text-lg focus:outline-none focus:border-blue-500 placeholder-gray-600"
-        />
-
         <button
           onClick={handleStart}
-          disabled={!theme.trim()}
+          disabled={!selectedTemplate.trim()}
           className="w-full h-12 md:h-14 px-6 bg-blue-600 text-white font-mono text-sm md:text-base lg:text-lg rounded disabled:bg-gray-800 disabled:text-gray-600 disabled:cursor-not-allowed"
         >
           Start MiniHack

@@ -108,7 +108,7 @@ export default function Reflect() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          theme: sessionData.theme,
+          theme: declaredStep || 'MiniHackセッション',
           reflection: whatIDid,
           insights: whatINoticed,
         }),
@@ -216,16 +216,6 @@ export default function Reflect() {
       <div className="flex flex-col items-center space-y-12 w-full max-w-3xl px-4">
         {/* Main Card */}
         <div className="w-full bg-[#111111] border border-white/5 rounded-lg p-12 md:p-16 flex flex-col space-y-12 shrink-0">
-          {/* Theme Display */}
-          <div className="text-center space-y-6">
-            <h2 className="text-white text-sm md:text-base font-bold tracking-wider">
-              今日のMiniHackのテーマ
-            </h2>
-            <p className="text-gray-400 text-xs md:text-sm">
-              {sessionData.theme || 'ホーム画面で入力欄に書いていたテーマを出力'}
-            </p>
-          </div>
-
           {/* Declaration Display */}
           {declaredStep && (
             <div className="space-y-4">

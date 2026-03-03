@@ -10,6 +10,7 @@ export default function Focus() {
   const [timeLeft, setTimeLeft] = useState(DURATION)
   const [keystrokes, setKeystrokes] = useState(0)
   const [startTime, setStartTime] = useState<string>('')
+  const [isFinished, setIsFinished] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -24,7 +25,9 @@ export default function Focus() {
       savedKeystrokes = sessionData.keystrokes || 0
       
       // Save to legacy keys for compatibility
-      localStorage.setItem('minihack_start', savedStartTime)
+      if (savedStartTime) {
+        localStorage.setItem('minihack_start', savedStartTime)
+      }
       localStorage.setItem('minihack_keystrokes', savedKeystrokes.toString())
     }
     
@@ -41,12 +44,15 @@ export default function Focus() {
 
     // Calculate time left based on absolute time
     const calculateTimeLeft = () => {
+      if (isFinished || !savedStartTime) return 0
+      
       const start = new Date(savedStartTime).getTime()
       const now = Date.now()
       const elapsed = Math.floor((now - start) / 1000)
       const remaining = Math.max(0, DURATION - elapsed)
 
-      if (remaining === 0) {
+      if (remaining === 0 && !isFinished) {
+        setIsFinished(true)
         handleAutoFinish()
       }
       return remaining
@@ -56,7 +62,9 @@ export default function Focus() {
     setTimeLeft(calculateTimeLeft())
 
     // Update every second
-    const timer = setInterval(calculateTimeLeft, 1000)
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft())
+    }, 1000)
 
     // Visibility API for tab switching correction
     const handleVisibilityChange = () => {
@@ -94,6 +102,9 @@ export default function Focus() {
   }
 
   const handleFinish = () => {
+    if (isFinished) return
+    
+    setIsFinished(true)
     const endTime = new Date().toISOString()
     localStorage.setItem('minihack_end', endTime)
     router.push('/reflect')
