@@ -64,7 +64,6 @@ export default function Home() {
             type="text"
             value={task}
             onChange={(e) => setTask(e.target.value)}
-            placeholder="やることを入力..."
             className="w-full h-12 md:h-14 px-4 bg-gray-900 border border-gray-800 rounded text-white font-mono text-sm md:text-base lg:text-lg focus:outline-none focus:border-blue-500 placeholder-gray-600"
           />
         </div>
