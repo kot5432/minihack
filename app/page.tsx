@@ -64,10 +64,6 @@ export default function Home() {
       <CommonLogo variant="home" />
 
       <div className="flex flex-col items-center space-y-6 md:space-y-8 w-full max-w-sm md:max-w-md px-4">
-        <h1 className="text-gray-400 text-sm md:text-base lg:text-lg font-mono text-center">
-          今日の一歩（テンプレートを選択）
-        </h1>
-
         {/* Template Selection */}
         <div className="w-full space-y-3">
           <select

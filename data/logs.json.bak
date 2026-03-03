@@ -52,5 +52,19 @@
     "startAt": "2026-03-03T13:44:16.126Z",
     "endAt": "2026-03-03T13:50:30.999Z",
     "timestamp": "2026-03-03T13:50:31.135Z"
+  },
+  {
+    "sessionId": "session_1772546053821",
+    "templateId": "A",
+    "generatedText": "[Mock Concise] 今日のMiniHackでは、「トップページのCTA文を3案書く」をテーマに「A案を25文字に短縮し、CTAを「今すぐ試す」「詳細を見る」で作成」に取り組み、「短縮で価値が抜けたのでサブテキストで補う必要あり」という気づきを得ました。着実に前進しています。",
+    "editedText": "[Mock Concise] 今日のMiniHackでは、「トップページのCTA文を3案書く」をテーマに「A案を25文字に短縮し、CTAを「今すぐ試す」「詳細を見る」で作成」に取り組み、「短縮で価値が抜けたのでサブテキストで補う必要あり」という気づきを得ました。着実に前進しています。",
+    "isEdited": false,
+    "declared_step": "A案を短くしてCTAを2案付ける",
+    "declared_from_template": "トップページのCTA文を3案書く",
+    "declared_timestamp": "2026-03-03T13:54:13.821Z",
+    "keystrokes": 0,
+    "startAt": "2026-03-03T13:54:13.821Z",
+    "endAt": "2026-03-03T13:54:56.294Z",
+    "timestamp": "2026-03-03T13:54:56.359Z"
   }
 ]
