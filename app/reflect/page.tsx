@@ -21,16 +21,27 @@ export default function Reflect() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [retryCount, setRetryCount] = useState(0)
+  const [declaredStep, setDeclaredStep] = useState('')
+  const [nextStep, setNextStep] = useState('')
   const router = useRouter()
 
   useEffect(() => {
     // Load session data from localStorage
+    const currentSession = localStorage.getItem('minihack.currentSession')
     const theme = localStorage.getItem('minihack_theme') || ''
     const keystrokes = parseInt(localStorage.getItem('minihack_keystrokes') || '0')
     const start = localStorage.getItem('minihack_start') || ''
     const end = localStorage.getItem('minihack_end') || ''
 
+    // Restore declared step if exists
+    let declaredStepText = ''
+    if (currentSession) {
+      const sessionData = JSON.parse(currentSession)
+      declaredStepText = sessionData.declaredStep || ''
+    }
+
     setSessionData({ theme, keystrokes, start, end })
+    setDeclaredStep(declaredStepText)
 
     // Restore input fields if they exist
     const savedWhatIDid = localStorage.getItem('minihack_whatIDid') || ''
@@ -137,21 +148,40 @@ export default function Reflect() {
   const handleLogAndExit = async () => {
     if (selectedCandidateId && summary) {
       const originalText = candidates.find(c => c.id === selectedCandidateId)?.text
+      const currentSession = localStorage.getItem('minihack.currentSession')
+      let sessionData = null
+      
+      if (currentSession) {
+        sessionData = JSON.parse(currentSession)
+      }
+      
       try {
         await fetch('/api/log', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            sessionId: sessionData?.start,
+            sessionId: sessionData?.sessionId || sessionData?.start,
             templateId: selectedCandidateId,
             generatedText: originalText,
             editedText: summary,
-            isEdited: originalText !== summary
+            isEdited: originalText !== summary,
+            // New fields for declaration tracking
+            declared_step: sessionData?.declaredStep || '',
+            declared_from_template: sessionData?.declaredFromTemplate || null,
+            declared_timestamp: sessionData?.startAt || '',
+            keystrokes: sessionData?.keystrokes || 0,
+            startAt: sessionData?.startAt || '',
+            endAt: new Date().toISOString()
           }),
         })
       } catch (err) {
         console.error('Failed to log summary:', err)
       }
+    }
+
+    // Save next step for future session
+    if (nextStep.trim()) {
+      localStorage.setItem('minihack.nextStep', nextStep)
     }
 
     // Clear all session and draft data
@@ -161,7 +191,8 @@ export default function Reflect() {
       'minihack_start',
       'minihack_end',
       'minihack_draft_did',
-      'minihack_draft_noticed'
+      'minihack_draft_noticed',
+      'minihack.currentSession'
     ]
     keys.forEach(k => localStorage.removeItem(k))
     router.push('/')
@@ -194,6 +225,18 @@ export default function Reflect() {
               {sessionData.theme || 'ホーム画面で入力欄に書いていたテーマを出力'}
             </p>
           </div>
+
+          {/* Declaration Display */}
+          {declaredStep && (
+            <div className="space-y-4">
+              <label className="block text-center text-white text-xs md:text-sm font-bold opacity-90">
+                開始時に宣言した一歩
+              </label>
+              <div className="w-full px-4 py-3 bg-blue-900/20 border border-blue-500/30 rounded text-blue-300 text-xs md:text-sm text-center">
+                {declaredStep}
+              </div>
+            </div>
+          )}
 
           {/* Input Fields */}
           <div className="space-y-12">
@@ -279,6 +322,23 @@ export default function Reflect() {
                 className="w-full h-40 px-6 py-6 bg-[#111111] border border-blue-500/30 rounded text-white text-sm focus:outline-none focus:border-blue-500 placeholder-gray-600 resize-none leading-relaxed"
                 placeholder="AIの要約を微調整してください"
               />
+            </div>
+
+            {/* Next Step Planning */}
+            <div className="space-y-4">
+              <label className="block text-center text-white text-xs font-bold opacity-70">
+                次の一歩（編集可）
+              </label>
+              <textarea
+                value={nextStep}
+                onChange={(e) => setNextStep(e.target.value)}
+                maxLength={100}
+                className="w-full h-20 px-4 py-3 bg-gray-900/50 border border-gray-700 rounded text-gray-300 text-xs md:text-sm focus:outline-none focus:border-blue-500 placeholder-gray-600 resize-none"
+                placeholder="次のMiniHackで取り組む一歩を計画..."
+              />
+              <div className="text-gray-500 text-xs font-mono text-right">
+                {nextStep.length}/100
+              </div>
             </div>
           </div>
         )}

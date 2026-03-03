@@ -14,8 +14,19 @@ export default function Focus() {
 
   useEffect(() => {
     // Initialize or restore session
+    const currentSession = localStorage.getItem('minihack.currentSession')
     let savedStartTime = localStorage.getItem('minihack_start')
     let savedKeystrokes = parseInt(localStorage.getItem('minihack_keystrokes') || '0')
+    
+    if (currentSession) {
+      const sessionData = JSON.parse(currentSession)
+      savedStartTime = sessionData.startAt || new Date().toISOString()
+      savedKeystrokes = sessionData.keystrokes || 0
+      
+      // Save to legacy keys for compatibility
+      localStorage.setItem('minihack_start', savedStartTime)
+      localStorage.setItem('minihack_keystrokes', savedKeystrokes.toString())
+    }
     
     if (!savedStartTime) {
       // New session
